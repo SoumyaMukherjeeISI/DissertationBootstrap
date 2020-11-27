@@ -1,0 +1,15 @@
+rm(list=ls())
+library(boot)
+x=c(3,5,7,18,43,85,81,98,100,130,230,487)
+edf=ecdf(x)
+plot(edf,type="h")
+n=10
+B=999
+meansd.fun=function(data,index)
+{
+	d=data[index]
+	c(mean(d),(mean(d))^2/length(d))
+}
+b=boot(x,statistic=meansd.fun,sim="parametric",R=B)
+b
+b$t[,1]
