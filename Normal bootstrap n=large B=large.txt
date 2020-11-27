@@ -1,0 +1,79 @@
+> rm(list=ls())
+> library(boot)
+> #set.seed(1234)
+> mu=0
+> sigma=1
+> n=100
+> B=1999
+> x=rnorm(n,mu,sigma)
+> meansd.fun=function(data,index)
++ {
++ d=data[index]
++ c(mean(d),var(d)/length(d))
++ }
+> #meansd.fun<-function(data,index){mean(data[index])}
+> b=boot(x,statistic=meansd.fun,R=B)
+> b
+
+ORDINARY NONPARAMETRIC BOOTSTRAP
+
+
+Call:
+boot(data = x, statistic = meansd.fun, R = B)
+
+
+Bootstrap Statistics :
+      original        bias    std. error
+t1* 0.05540998 -0.0021471308 0.100048033
+t2* 0.01050381 -0.0001919781 0.001506842
+> bootestimate=mean(b$t)
+> bootestimate
+[1] 0.03178734
+> hist(b$t[,1],main=paste("Bootstrap Distribution for mu=",mu,",sigma=",sigma,",n=",n," and B=",B,sep=""),freq=F)
+> ci=boot.ci(b,conf=0.95)
+> names(ci)
+[1] "R"       "t0"      "call"    "normal"  "basic"   "student" "percent"
+[8] "bca"    
+> ci
+BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
+Based on 1999 bootstrap replicates
+
+CALL : 
+boot.ci(boot.out = b, conf = 0.95)
+
+Intervals : 
+Level      Normal              Basic             Studentized     
+95%   (-0.1385,  0.2536 )   (-0.1359,  0.2596 )   (-0.1433,  0.2618 )  
+
+Level     Percentile            BCa          
+95%   (-0.1488,  0.2467 )   (-0.1441,  0.2520 )  
+Calculations and Intervals on Original Scale
+> coverages=c(0,0,0,0,0)
+> for(i in 1:1000)
++ {
++ d=rnorm(n,mu,sigma)
++ boo=boot(d,statistic=meansd.fun,R=B,stype="i")
++ confi=boot.ci(boo,conf=0.95)
++ if(confi$normal[2]<mu & confi$normal[3]>mu)
++ {
++ coverages[1]=coverages[1]+1
++ }
++ if(confi$basic[4]<mu & confi$basic[5]>mu)
++ {
++ coverages[2]=coverages[2]+1
++ }
++ if(confi$student[4]<mu & confi$student[5]>mu)
++ {
++ coverages[3]=coverages[3]+1
++ }
++ if(confi$percent[4]<mu & confi$percent[5]>mu)
++ {
++ coverages[4]=coverages[4]+1
++ }
++ if(confi$bca[4]<mu & confi$bca[5]>mu)
++ {
++ coverages[5]=coverages[5]+1
++ }
++ }
+> coverages
+[1] 953 952 958 953 953
