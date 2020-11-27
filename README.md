@@ -1,2 +1,2 @@
 # DissertationBootstrap
-This is the github repository for the codes and other relevant materials used for completing my Dissertation Project titled “Comparison of Classical Parametric and Non-Parametric inferential methods with the Bootstrap Resampling Method”
+This is the github repository for the codes and other relevant materials used for completing my Dissertation Project titled “Comparison of Classical Parametric and Non-Parametric inferential methods with the Bootstrap Resampling Method” under the supervision of Prof. Debjit Sengupta, St. Xavier’s College, Kolkata during the 6th and Final Semester of B.Sc. Statistics (Hons.) from St. Xavier’s College, Kolkata from Nov 2018 to April 2019
